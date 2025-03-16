@@ -1,0 +1,24 @@
+[package]
+name = "membw-tester"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+num_cpus = "1.16.0"
+
+[[bin]]
+name = "first"
+path = "src/main.rs"
+
+[[bin]]
+name = "second"
+path = "src/second_attempt.rs"
+
+[[bin]]
+name = "third"
+path = "src/third_attempt.rs"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
