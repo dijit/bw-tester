@@ -3,6 +3,19 @@ use std::sync::Arc;
 use std::thread;
 use std::time::{Instant};
 
+/*
+    This is a similar method to the first, very ideomatic and poorly threaded.
+    We essentially just allocate a bunch (8GiB) then copy it around and see how long it takes.
+    We use the time it takes to estimate how long it will always take.
+    This program will run a bunch of tests and take an average (rather than a one shot)
+    and supports enabling CPU prefetching (unsafe), which might have weird behaviour on ARM systems.
+
+    It will then walk through the number of threads as you have CPUs on your system.
+    This is more reliable than the first attempt at this program, however it is flawed to to ARC.
+    We also become very CPU limited when it comes to moving things around, we can get faster if we
+    switch to AVX instructions instead of waiting for CPU time from the scheduler.
+ */
+
 static GLOBAL_SUM: AtomicUsize = AtomicUsize::new(0);
 static DEFAULT_MEMORY_SIZE: usize = 8 * 1024 * 1024 * 1024; // 8 GiB
 

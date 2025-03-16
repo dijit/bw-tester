@@ -3,6 +3,13 @@ use std::thread;
 use std::sync::Arc;
 use std::env;
 
+/*
+    This is the easiest most idiomatic way I can think of to test memory
+    We essentially just allocate a bunch (8GiB) then copy it around and see how long it takes.
+    We use the time it takes to estimate how long it will always take.
+    This program will run very quickly, but is the lowest reliability in output.
+ */
+
 const DEFAULT_BUFFER_SIZE_MB: usize = 8 * 1024;
 
 fn run_test(buffer_size: usize, thread_count: usize) {
@@ -60,7 +67,7 @@ fn main() {
     let buffer_size_mb = args.get(1).and_then(|s| s.parse().ok()).unwrap_or(DEFAULT_BUFFER_SIZE_MB);
     let thread_count = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(num_cpus::get());
 
-    println!("BlandWidth (Simple - Optimized)");
+    println!("Idiomatic B/W Test (first)");
     println!("===============================\n");
 
     run_test(buffer_size_mb, thread_count);
